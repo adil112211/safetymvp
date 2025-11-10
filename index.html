@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#3390ec">
+    <title>Техника Безопасности</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div id="app">
+        <!-- Header -->
+        <header class="app-header">
+            <h1 id="header-title">Техника Безопасности</h1>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Dashboard View -->
+            <div id="view-dashboard" class="view active">
+                <div class="welcome-section">
+                    <div class="user-avatar">👤</div>
+                    <h2 class="welcome-text">Привет, <span id="user-name">Иван Петров</span>!</h2>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📝</div>
+                        <div class="stat-value" id="stat-tests">12</div>
+                        <div class="stat-label">Тестов пройдено</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value" id="stat-score">89%</div>
+                        <div class="stat-label">Средний балл</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-value" id="stat-certs">8</div>
+                        <div class="stat-label">Сертификатов</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚠️</div>
+                        <div class="stat-value" id="stat-violations">3</div>
+                        <div class="stat-label">Нарушений</div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary btn-large" onclick="showView('tests')">📝 Начать тест</button>
+                    <button class="btn btn-secondary btn-large" onclick="showView('report')">⚠️ Сообщить о нарушении</button>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Недавняя активность</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon success">✓</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Тест пройден</div>
+                                <div class="activity-subtitle">Работа на высоте - 88%</div>
+                            </div>
+                            <div class="activity-time">2 дня назад</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon warning">⚠</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Нарушение зафиксировано</div>
+                                <div class="activity-subtitle">Неисправное оборудование</div>
+                            </div>
+                            <div class="activity-time">5 дней назад</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tests View -->
+            <div id="view-tests" class="view">
+                <div class="section">
+                    <h3 class="section-title">Доступные тесты</h3>
+                    <div id="tests-list" class="tests-list"></div>
+                </div>
+            </div>
+
+            <!-- Test Taking View -->
+            <div id="view-test-taking" class="view">
+                <div class="test-header">
+                    <div class="test-progress">
+                        <div class="test-counter">
+                            Вопрос <span id="current-question">1</span> из <span id="total-questions">10</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="progress-fill" class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="test-content">
+                    <h3 id="question-text" class="question-text"></h3>
+                    <div id="options-container" class="options-container"></div>
+                </div>
+                <div class="test-navigation">
+                    <button id="btn-prev" class="btn btn-secondary" onclick="previousQuestion()" disabled>← Назад</button>
+                    <button id="btn-next" class="btn btn-primary" onclick="nextQuestion()">Далее →</button>
+                </div>
+            </div>
+
+            <!-- Test Results View -->
+            <div id="view-results" class="view">
+                <div class="results-container">
+                    <div id="results-icon" class="results-icon"></div>
+                    <div id="results-score" class="results-score"></div>
+                    <div id="results-status" class="results-status"></div>
+                    <div class="results-breakdown">
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Правильных ответов:</span>
+                            <span id="correct-answers" class="breakdown-value"></span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Неправильных ответов:</span>
+                            <span id="incorrect-answers" class="breakdown-value"></span>
+                        </div>
+                    </div>
+                    <div id="results-actions" class="results-actions"></div>
+                </div>
+            </div>
+
+            <!-- Certificates View -->
+            <div id="view-certificates" class="view">
+                <div class="section">
+                    <h3 class="section-title">Мои сертификаты</h3>
+                    <div id="certificates-list" class="certificates-list"></div>
+                </div>
+            </div>
+
+            <!-- Report Violation View -->
+            <div id="view-report" class="view">
+                <div class="section">
+                    <h3 class="section-title">Сообщить о нарушении</h3>
+                    <form id="violation-form" class="violation-form">
+                        <div class="form-group">
+                            <label class="form-label">Фото нарушения</label>
+                            <div class="photo-upload" onclick="document.getElementById('photo-input').click()">
+                                <div id="photo-preview" class="photo-preview">
+                                    <div class="photo-placeholder">📷 Загрузить фото</div>
+                                </div>
+                            </div>
+                            <input type="file" id="photo-input" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Категория</label>
+                            <select id="violation-category" class="form-control" required>
+                                <option value="">Выберите категорию</option>
+                                <option value="Нет защитной каски">Нет защитной каски</option>
+                                <option value="Нет защитных очков">Нет защитных очков</option>
+                                <option value="Неисправное оборудование">Неисправное оборудование</option>
+                                <option value="Опасное состояние">Опасное состояние</option>
+                                <option value="Нарушение процедуры">Нарушение процедуры</option>
+                                <option value="Другое">Другое</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Описание</label>
+                            <textarea id="violation-description" class="form-control" rows="4" placeholder="Опишите нарушение подробно..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Дата и время</label>
+                            <input type="datetime-local" id="violation-date" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-large">Отправить отчёт</button>
+                    </form>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Мои отчёты</h3>
+                    <div id="violations-list" class="violations-list"></div>
+                </div>
+            </div>
+
+            <!-- Leaderboard View -->
+            <div id="view-leaderboard" class="view">
+                <div class="section">
+                    <div class="leaderboard-filters">
+                        <button class="filter-btn active" onclick="filterLeaderboard('month')">Этот месяц</button>
+                        <button class="filter-btn" onclick="filterLeaderboard('all')">Всё время</button>
+                    </div>
+                    <div id="leaderboard-list" class="leaderboard-list"></div>
+                </div>
+            </div>
+
+            <!-- AI Assistant View -->
+            <div id="view-ai" class="view">
+                <div class="chat-container">
+                    <div id="chat-messages" class="chat-messages">
+                        <div class="chat-message ai-message">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-bubble">
+                                Здравствуйте! Я ваш помощник по технике безопасности. Задайте мне любой вопрос о правилах безопасности на производстве.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="suggested-questions">
+                        <button class="suggestion-chip" onclick="askQuestion('Как правильно использовать огнетушитель?')">Как использовать огнетушитель?</button>
+                        <button class="suggestion-chip" onclick="askQuestion('Какие СИЗ нужны при работе на высоте?')">СИЗ для работы на высоте</button>
+                        <button class="suggestion-chip" onclick="askQuestion('Что делать при обнаружении пожара?')">Действия при пожаре</button>
+                    </div>
+                    <div class="chat-input-container">
+                        <input type="text" id="chat-input" class="chat-input" placeholder="Задайте вопрос...">
+                        <button class="chat-send-btn" onclick="sendMessage()">➤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile View -->
+            <div id="view-profile" class="view">
+                <div class="profile-header">
+                    <div class="profile-avatar">👤</div>
+                    <h2 class="profile-name" id="profile-name">Иван Петров</h2>
+                    <p class="profile-username" id="profile-username">@ivanpetrov</p>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Статистика</h3>
+                    <div class="profile-stats">
+                        <div class="profile-stat-item">
+                            <span class="profile-stat-label">Тестов пройдено</span>
+                            <span class="profile-stat-value">12</span>
+                        </div>
+                        <div class="profile-stat-item">
+                            <span class="profile-stat-label">Средний балл</span>
+                            <span class="profile-stat-value">89%</span>
+                        </div>
+                        <div class="profile-stat-item">
+                            <span class="profile-stat-label">Сертификатов получено</span>
+                            <span class="profile-stat-value">8</span>
+                        </div>
+                        <div class="profile-stat-item">
+                            <span class="profile-stat-label">Нарушений зафиксировано</span>
+                            <span class="profile-stat-value">3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <button class="btn btn-secondary btn-large" onclick="showView('certificates')">📜 Мои сертификаты</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="showView('dashboard')" data-view="dashboard">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Главная</span>
+            </button>
+            <button class="nav-item" onclick="showView('tests')" data-view="tests">
+                <span class="nav-icon">📝</span>
+                <span class="nav-label">Тесты</span>
+            </button>
+            <button class="nav-item" onclick="showView('leaderboard')" data-view="leaderboard">
+                <span class="nav-icon">🏆</span>
+                <span class="nav-label">Лидеры</span>
+            </button>
+            <button class="nav-item" onclick="showView('ai')" data-view="ai">
+                <span class="nav-icon">🤖</span>
+                <span class="nav-label">Помощник</span>
+            </button>
+            <button class="nav-item" onclick="showView('profile')" data-view="profile">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">Профиль</span>
+            </button>
+        </nav>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast"></div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
